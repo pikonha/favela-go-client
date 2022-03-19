@@ -4,22 +4,24 @@ import {useRouter}  from 'next/router';
 
 import useTokenContract from "../hooks/useTokenContract";
 import useIPFS from "../hooks/useIpfs";
-import NFTList, {NFT} from "./NFTList";
 import CTAButton from "./CTAButton";
 
-const nftAddress = "0xB9A7083C98278a0E3D236F1E5cCbD5A326D0b624"
+import NFTList, { NFT } from "../components/NFTList";
+import QrReader from "./QrContainerReader";
+import { contractHash } from '../config'
 
 export default function UserList() {
   const router = useRouter()
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
-  
-  const contract = useTokenContract(nftAddress)
+  const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
+
+  const contract = useTokenContract(contractHash)
   const IPFS = useIPFS()
-  
+
   useEffect(() => {
     async function awaitAccount() {
-      if (contract) nftsSet(await IPFS.getNftsFromAccount(contract,account))
+      if (contract) nftsSet(await IPFS.getNftsFromAccount(contract, account))
     }
     awaitAccount()
   }, [contract, account, IPFS])
