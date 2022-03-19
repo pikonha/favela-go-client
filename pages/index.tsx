@@ -1,23 +1,21 @@
 import { useWeb3React } from "@web3-react/core";
-// import ETHBalance from "../components/ETHBalance";
-// import TokenBalance from "../components/TokenBalance";
+import useIsMinter from "../hooks/useIsMinter";
+import AdminList from "../components/AdminList";
+import UserList from "../components/UserList";
 
-// const DAI_TOKEN_ADDRESS = "0x6b175474e89094c44da98b954eedeac495271d0f";
+const nftAddress = "0xB9A7083C98278a0E3D236F1E5cCbD5A326D0b624"
 
 function Home() {
   const { account, library } = useWeb3React();
+  const isMinter = useIsMinter(account, nftAddress)
 
   const isConnected = typeof account === "string" && !!library;
 
   return (
     <div>
       <main>
-        {isConnected && (
-          <section>
-            {/* <ETHBalance />
-            <TokenBalance tokenAddress={DAI_TOKEN_ADDRESS} symbol="DAI" /> */}
-          </section>
-        )}
+        {isConnected && (isMinter && <AdminList />) }
+        {isConnected && (!isMinter && <UserList />) }
       </main>
     </div>
   );

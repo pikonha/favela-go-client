@@ -4,17 +4,18 @@
 
 - [ ] User
   - [ ] Read QR Code
-  - [ ] List NFTs
-    - [ ] list
+    - [ ] Button `scan QR code`
+  - [X] List NFTs
+    - [X] list
     - [ ] map
-  - [ ] Search for NFTs nearby
 - [ ] Admin
   - [ ] Create a new NFT
     - [ ] map
     - [ ] image
     - [ ] name
     - [ ] enabled
-  - [ ] Disable the creation of new NFTs from QR Code
+  - [ ] List NFTs
+  - [ ] Pause generation of new NFTs
 
 ## Features
 
