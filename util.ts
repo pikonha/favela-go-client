@@ -9,6 +9,13 @@ export function shortenHex(hex: string, length = 4) {
 
 const harmonyExplorer = "explorer.pops.one";
 
+export function pinataCreds() {
+  return {
+    pinata_api_key: String(process.env.API_Key),
+    pinata_secret_api_key: String(process.env.API_Secret),
+  };
+}
+
 export function formatEtherscanLink(
   type: "Account" | "Transaction",
   data: [number, string]
