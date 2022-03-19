@@ -1,30 +1,38 @@
 import axios from "axios";
-import { randomUUID } from "crypto";
 import { useState } from "react"
 import CTAButton from "../../../components/CTAButton"
-import useUpload from "../../../hooks/useUpload";
 import { pinataCreds } from "../../../util";
 import { v4 as uuidv4 } from 'uuid';
 
-export async function getStaticProps() {
-  return {
-    pinata_api_key: String(process.env.API_Key),
-    pinata_secret_api_key: String(process.env.API_Secret),
-  };
-  // ...
-}
 
 export default function NewNFTForm() {
   const [name, nameSet] = useState<String>()
   const [enabled, enabledSet] = useState<Boolean>(false)
   const [file, fileSet] = useState<String>()
+  const [fileBlob, fileBlobSet] = useState<Blob>()
   const [location, locationSet] = useState<String>()
   // const { fileResult } = useUpload();
   
-  function returnJson(){
+  async function uploadImage(){
+    const metadata = JSON.stringify({
+      name: uuidv4(),
+    });
+    const resp = await pinFile(fileBlob, metadata);
+    
+    if(resp.status != 200)
+    {
+      console.log(resp);
+      return null;
+    }
+    return resp.data.IpfsHash;
+  }
+
+  async function returnJson(){
+    const imageHash = await uploadImage();
+    if(imageHash == null) throw Error("Image Hash cannot be null");
     const obj = {
       name: name,
-      image: file,
+      image: imageHash,
       description: location,
       hidden: enabled
     }
@@ -32,13 +40,13 @@ export default function NewNFTForm() {
     const blob = new Blob([json], {
       type: 'application/json',
     });
+
     const metadata = JSON.stringify({
       name: uuidv4(),
     });
     pinFile(blob, metadata).then(x => console.log(x));
-    // const resp = useUpload(blob);
   }
-
+  
   async function pinFile(stream, metadata) {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
     const creds = {
@@ -104,7 +112,10 @@ export default function NewNFTForm() {
               type="file"
               accept="image/*"
               required={true}
-              onChange={e => fileSet(URL.createObjectURL(e.target.files[0]))}
+              onChange={e => {
+                fileBlobSet(e.target.files[0]);
+                fileSet(URL.createObjectURL(e.target.files[0]))
+              }}
           />
           </div>
         </div>
