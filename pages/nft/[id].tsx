@@ -6,33 +6,28 @@ import { useEffect, useState } from "react";
 import { contractHash } from '../../config'
 import useTokenContract from "../../hooks/useTokenContract";
 import ipfs from "../../utils/ipfs";
+import { NFT } from "../../utils/types";
 
-type NFT = {
-  id: Number,
-  name: String
-  description: String,
-  extra_links: String[],
-  hidden: Boolean,
-  image: String,
-  lat: Number,
-  lng: Number,
-}
 
 export default function Nft() {
   const [nft, nftSet] = useState<NFT>()
   const contract = useTokenContract(contractHash)
 
-  const {query} = useRouter()
+  const router = useRouter()
 
   useEffect(() => {
     const fetchNft = async () => {
       if(contract){
-        const nft = await ipfs.getNftById(contract, BigNumber.from(query.id as String))
+        const nft = await ipfs.getNftById(contract, BigNumber.from(router.query.id as String))
         nftSet(nft)
       }
     }
     fetchNft()
-  }, [contract, query.id])
+  }, [contract, router.query.id])
+
+  function handleReturn() {
+    return router.back()
+  }
 
   if (!nft || !contract) {
     return <span>Loading...</span>
@@ -60,7 +55,10 @@ export default function Nft() {
         </p>
       </div>
       <div className="max-w-4/5 mx-auto flex">
-        <button className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+        <button
+          className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+          onClick={handleReturn}
+          >
           Voltar
         </button>
       </div>
