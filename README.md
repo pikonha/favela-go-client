@@ -15,8 +15,9 @@
     - [ ] image
     - [ ] name
     - [ ] enabled
-  - [ ] List NFTs
+  - [X] List NFTs
   - [ ] Pause generation of new NFTs
+  - [ ] Generate QR Code on click
 
 ## Features
 
