@@ -5,6 +5,7 @@ let addrIsMinter = false;
 
 export default function useIsMinter(account: string, contractAddress: string): Boolean {
   const contract = useTokenContract(contractAddress)
+  const [minter, setMinter] = useState(false)
 
   useEffect(() => {
     const fetchIsMinter = async () => {
@@ -15,10 +16,10 @@ export default function useIsMinter(account: string, contractAddress: string): B
         return isMinter
       }
     }
-    fetchIsMinter().then(r => addrIsMinter = r)
+    fetchIsMinter().then(setMinter)
   }, [account, contract])
 
-  return addrIsMinter
+  return minter
 }
 
 export function isMinter() {
