@@ -13,13 +13,16 @@ export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
   const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
+  const [showButtonScanQr, setShowButtonScanQr] = useState(true)
   const contract = useTokenContract(contractHash)
 
   function openScanQRCode() {
+    setShowButtonScanQr(false)
     return scanReaderEnabledSet(true)
   }
 
   function closeQRCode() {
+    setShowButtonScanQr(true)
     return scanReaderEnabledSet(false)
   }
 
@@ -33,15 +36,18 @@ export default function UserList() {
   return (
     <>
       <div className="flex flex-col items-center">
-        User
         <div className="mb-2 mt-2">
-          <CTAButton value="Scan QR Code"
-            handleClick={openScanQRCode}
-          />
+          {showButtonScanQr && (
+            <CTAButton value="Scan QR Code"
+              handleClick={openScanQRCode}
+            />
+          )}
 
-          <CTAButton value="Close QR Code"
-            handleClick={closeQRCode}
-          />
+          {!showButtonScanQr && (
+            <CTAButton value="Close QR Code"
+              handleClick={closeQRCode}
+            />
+          )}
         </div>
 
         <div className="flix items-center">
@@ -54,7 +60,7 @@ export default function UserList() {
         </div>
 
         <NFTList nfts={nfts} />
-        </div>
-      </>
-      )
+      </div>
+    </>
+  )
 }

@@ -93,20 +93,23 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
                         scanDelay={500}
                         onResult={handlerScan}
                         constraints={{ facingMode: 'user' }}
-                        videoStyle={{ width: '50%' }}
+                        videoStyle={{
+                            width: '100%',
+                            align: 'center'
+                        }}
                         videoContainerStyle={{
-                            height: 300,
-                            width: 300,
+                            height: 250,
+                            width: 250,
                             display: 'flex',
                             justifyContent: 'center'
                         }}
                         containerStyle={{}}
                     />
+                    <p>
+                        {data}
+                    </p>
                 </div>
             )}
-            <p>
-                {data}
-            </p>
         </>
     );
 };
