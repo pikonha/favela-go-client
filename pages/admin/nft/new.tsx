@@ -6,6 +6,17 @@ export default function NewNFTForm() {
   const [enabled, enabledSet] = useState<Boolean>(false)
   const [file, fileSet] = useState<String>()
   const [location, locationSet] = useState<String>()
+  
+  function returnJson(){
+    const obj = {
+      name: name,
+      image: file,
+      details: location,
+      hidden: enabled
+    }
+    
+    // console.log(JSON.stringify(obj));
+  }
 
   return (
     <div className="mx-4">
@@ -35,6 +46,7 @@ export default function NewNFTForm() {
             <input className="appearance-none border-2 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none"
               type="text"
               required={true}
+              onChange={e => locationSet(e.target.value)}
           />
           </div>
         </div>
@@ -69,7 +81,7 @@ export default function NewNFTForm() {
         <div className="md:flex md:items-center">
           <div className="md:w-1/3"></div>
           <div className="md:w-2/3">
-            <CTAButton value="Confimar" handleClick={() => {}} />
+            <CTAButton value="Confimar" handleClick={() => {returnJson()}} />
           </div>
         </div>
       </form>

@@ -14,8 +14,9 @@ function Home() {
   return (
     <div>
       <main>
-        {isConnected && (isMinter && <AdminList />) }
-        {isConnected && (!isMinter && <UserList />) }
+        <AdminList />
+        {/* {isConnected && (isMinter && <AdminList />) }
+        {isConnected && (!isMinter && <UserList />) } */}
       </main>
     </div>
   );
