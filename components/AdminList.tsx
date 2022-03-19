@@ -7,14 +7,12 @@ import useIPFS from "../hooks/useIpfs";
 import CTAButton from "./CTAButton";
 
 import NFTList, { NFT } from "../components/NFTList";
-import QrReader from "./QrContainerReader";
 import { contractHash } from '../config'
 
 export default function UserList() {
   const router = useRouter()
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
-  const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
 
   const contract = useTokenContract(contractHash)
   const IPFS = useIPFS()
