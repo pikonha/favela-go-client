@@ -32,7 +32,7 @@ export default function NewNFTForm() {
     if(imageHash == null) throw Error("Image Hash cannot be null");
     const obj = {
       name: name,
-      image: imageHash,
+      image: `ipfs://${imageHash}`,
       description: location,
       hidden: enabled
     }
