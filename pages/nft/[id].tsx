@@ -6,17 +6,8 @@ import { useEffect, useState } from "react";
 import { contractHash } from '../../config'
 import useTokenContract from "../../hooks/useTokenContract";
 import ipfs from "../../utils/ipfs";
+import { NFT } from "../../utils/types";
 
-type NFT = {
-  id: Number,
-  name: String
-  description: String,
-  extra_links: String[],
-  hidden: Boolean,
-  image: String,
-  lat: Number,
-  lng: Number,
-}
 
 export default function Nft() {
   const [nft, nftSet] = useState<NFT>()
