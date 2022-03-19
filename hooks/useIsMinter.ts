@@ -1,8 +1,9 @@
-import {useEffect, useMemo, useState} from "react"
+import {useEffect, useState} from "react"
 import useTokenContract from "./useTokenContract";
 
+let addrIsMinter = false;
+
 export default function useIsMinter(account: string, contractAddress: string): Boolean {
-  const [isMinter, isMinterSet] = useState(false)
   const contract = useTokenContract(contractAddress)
 
   useEffect(() => {
@@ -10,11 +11,16 @@ export default function useIsMinter(account: string, contractAddress: string): B
       if (contract) {
         const minterRole = await contract.MINTER_ROLE()
         const isMinter = await contract.hasRole(minterRole, account)
+        addrIsMinter = isMinter
         return isMinter
       }
     }
-    fetchIsMinter().then(isMinterSet)
+    fetchIsMinter().then(r => addrIsMinter = r)
   }, [account, contract])
 
-  return isMinter
+  return addrIsMinter
+}
+
+export function isMinter() {
+  return addrIsMinter
 }
