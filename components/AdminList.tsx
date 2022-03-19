@@ -1,10 +1,25 @@
+import { useEffect, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
 import {useRouter}  from 'next/router';
 
+import { contractHash } from '../config'
+import ipfs from "../utils/ipfs";
 import NFTList, {NFT} from "./NFTList";
 import CTAButton from "./CTAButton";
+import useTokenContract from "../hooks/useTokenContract";
 
-export default function UserList({nfts = []}: {nfts: NFT[]}) {
+export default function AdminList() {
+  const [nfts, nftsSet] = useState<NFT[]>([])
+  const { account } = useWeb3React();
+  const contract = useTokenContract(contractHash)
   const router = useRouter()
+
+  useEffect(() => {
+    async function awaitAccount() {
+      if (contract) nftsSet(await ipfs.getNftsFromAccount(contract, account))
+    }
+    awaitAccount()
+  }, [contract, account])
   
   return (
     <>

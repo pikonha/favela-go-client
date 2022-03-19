@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 
 import useTokenContract from "../hooks/useTokenContract";
-import useIPFS from "../hooks/useIpfs";
+import ipfs from "../utils/ipfs";
 import CTAButton from "./CTAButton";
-import NFTList, { NFT } from "../components/NFTList";
+import NFTList, { NFT } from "./NFTList";
 import QrReader from "./QrContainerReader";
 
 import { contractHash } from '../config'
@@ -13,9 +13,7 @@ export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
   const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
-
   const contract = useTokenContract(contractHash)
-  const IPFS = useIPFS()
 
   function openScanQRCode() {
     return scanReaderEnabledSet(true)
@@ -27,10 +25,10 @@ export default function UserList() {
 
   useEffect(() => {
     async function awaitAccount() {
-      if (contract) nftsSet(await IPFS.getNftsFromAccount(contract, account))
+      if (contract) nftsSet(await ipfs.getNftsFromAccount(contract, account))
     }
     awaitAccount()
-  }, [contract, account, IPFS])
+  }, [contract, account])
 
   return (
     <>

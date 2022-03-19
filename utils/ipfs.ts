@@ -22,6 +22,6 @@ async function getNftsFromAccount(contract: ERC20, account: string) {
   ))
 }
 
-export {
+export default {
   getNftsFromAccount
 }
