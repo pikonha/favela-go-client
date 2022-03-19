@@ -1,0 +1,13 @@
+{
+    "name": "Cristo Redentor",
+    "description": "Estatua antiga e bonita no Rio de Janeiro",
+    "image": "https://ipfs.io/ipfs/QmQP99yW82xNKPxXLroxj1rMYMGF6Grwjj2o4svsdmGh7S/out/I/m/Cristo_Redentor_-_Rio_de_Janeiro%2C_Brasil.jpg",
+    "lat": -22.951985,
+    "lng": -43.210391,
+    "id": 1,
+    "hidden": false,
+    "extra_links": [
+        "harmony.com",
+        "eth.com"
+    ]
+}

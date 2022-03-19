@@ -3,33 +3,60 @@ import { useWeb3React } from "@web3-react/core";
 
 import useTokenContract from "../hooks/useTokenContract";
 import useIPFS from "../hooks/useIpfs";
-import NFTList, {NFT} from "./NFTList";
 import CTAButton from "./CTAButton";
+import NFTList, { NFT } from "../components/NFTList";
+import QrReader from "./QrContainerReader";
 
-const nftAddress = "0xB9A7083C98278a0E3D236F1E5cCbD5A326D0b624"
+import { contractHash } from '../config'
 
 export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
-  
-  const contract = useTokenContract(nftAddress)
+  const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
+
+  const contract = useTokenContract(contractHash)
   const IPFS = useIPFS()
-  
+
+  function openScanQRCode() {
+    return scanReaderEnabledSet(true)
+  }
+
+  function closeQRCode() {
+    return scanReaderEnabledSet(false)
+  }
+
   useEffect(() => {
     async function awaitAccount() {
-      if (contract) nftsSet(await IPFS.getNftsFromAccount(contract,account))
+      if (contract) nftsSet(await IPFS.getNftsFromAccount(contract, account))
     }
     awaitAccount()
   }, [contract, account, IPFS])
 
-  function handleScanQRCode() {
-
-  }
-
   return (
     <>
-      <CTAButton value="Scan QR Code" handleClick={handleScanQRCode} />
-      <NFTList nfts={nfts} />
-    </>
-  )
+      <div className="flex flex-col items-center">
+        User
+        <div className="mb-2 mt-2">
+          <CTAButton value="Scan QR Code"
+            handleClick={openScanQRCode}
+          />
+
+          <CTAButton value=" Close QR Code"
+            handleClick={closeQRCode}
+          />
+        </div>
+
+        <div className="flix items-center">
+          {
+            scanReaderEnabled && <QrReader
+              contract={contract}
+              address={account}
+            />
+          }
+        </div>
+
+        <NFTList nfts={nfts} />
+        </div>
+      </>
+      )
 }
