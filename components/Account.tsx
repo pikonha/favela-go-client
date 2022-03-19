@@ -39,12 +39,12 @@ const Account = () => {
     try {
       await activate(injected, undefined, true)
     } catch (error) {
-        // ignore the error if it's a user rejected request
-        if (error instanceof UserRejectedRequestError) {
-          setConnecting(false);
-        } else {
-          setError(error);
-        }
+      // ignore the error if it's a user rejected request
+      if (error instanceof UserRejectedRequestError) {
+        setConnecting(false);
+      } else {
+        setError(error);
+      }
     }
   }
 
@@ -73,7 +73,7 @@ const Account = () => {
         rel: "noopener noreferrer",
       }}
     >
-      {ENSName || `${shortenHex(account, 4)}`}
+      {ENSName || `Connected with ${shortenHex(account, 5)}`}
     </a>
   );
 };

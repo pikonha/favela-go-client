@@ -2,34 +2,69 @@ import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 
 import useTokenContract from "../hooks/useTokenContract";
-import useIPFS from "../hooks/useIpfs";
-import NFTList, {NFT} from "./NFTList";
+import ipfs from "../utils/ipfs";
 import CTAButton from "./CTAButton";
+import NFTList, { NFT } from "./NFTList";
+import QrReader from "./QrContainerReader";
 
-const nftAddress = "0xB9A7083C98278a0E3D236F1E5cCbD5A326D0b624"
+import { contractHash } from '../config'
 
 export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
-  
-  const contract = useTokenContract(nftAddress)
-  const IPFS = useIPFS()
-  
+  const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
+  const [showButtonScanQr, setShowButtonScanQr] = useState(true)
+  const contract = useTokenContract(contractHash)
+
+  function openScanQRCode() {
+    setShowButtonScanQr(false)
+    return scanReaderEnabledSet(true)
+  }
+
+  function closeQRCode() {
+    setShowButtonScanQr(true)
+    return scanReaderEnabledSet(false)
+  }
+
   useEffect(() => {
     async function awaitAccount() {
-      if (contract) nftsSet(await IPFS.getNftsFromAccount(contract,account))
+      if (contract) {
+        const n = await ipfs.getNftsFromAccount(contract, account)
+        console.log(n)
+        nftsSet(n)
+      }
     }
     awaitAccount()
-  }, [contract, account, IPFS])
-
-  function handleScanQRCode() {
-
-  }
+  }, [contract, account])
 
   return (
     <>
-      <CTAButton value="Scan QR Code" handleClick={handleScanQRCode} />
-      <NFTList nfts={nfts} />
+      <div className="flex flex-col items-center">
+        <div className="mb-2 mt-2">
+          {showButtonScanQr && (
+            <CTAButton value="Scan QR Code"
+              handleClick={openScanQRCode}
+            />
+          )}
+
+          {!showButtonScanQr && (
+            <CTAButton value="Close QR Code"
+              handleClick={closeQRCode}
+            />
+          )}
+        </div>
+
+        <div className="flix items-center">
+          {
+            scanReaderEnabled && <QrReader
+              contract={contract}
+              address={account}
+            />
+          }
+        </div>
+
+        <NFTList nfts={nfts} />
+      </div>
     </>
   )
 }
