@@ -23,7 +23,7 @@ function NFTCard({url}) {
 
 export default function NFTList({nfts}: NFTListProps) {
   return (
-    <div className="flex items-center flex-wrap w-4/5 mx-auto gap-4">
+    <div className="grid w-4/5 mx-auto grid-cols-2 gap-y-4">
       {nfts.map((n, i) => (
         <NFTCard key={i} url={n.url}/>
       ))}

@@ -8,6 +8,7 @@
   - [X] List NFTs
     - [X] list
     - [ ] map
+  - [ ] NFT details
 - [ ] Admin
   - [ ] Create a new NFT
     - [ ] map

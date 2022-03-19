@@ -3,7 +3,8 @@ import { useWeb3React } from "@web3-react/core";
 
 import useTokenContract from "../hooks/useTokenContract";
 import useIPFS from "../hooks/useIpfs";
-import NFTList, {NFT} from "../components/NFTList";
+import NFTList, {NFT} from "./NFTList";
+import CTAButton from "./CTAButton";
 
 const nftAddress = "0xB9A7083C98278a0E3D236F1E5cCbD5A326D0b624"
 
@@ -26,14 +27,9 @@ export default function UserList() {
   }
 
   return (
-    <div className="flex flex-col items-center">
-      <button 
-        className="bg-green-100 px-4 py-2 rounded-md"
-        onClick={handleScanQRCode}
-      >
-        Scan QR Code
-      </button>
+    <>
+      <CTAButton value="Scan QR Code" handleClick={handleScanQRCode} />
       <NFTList nfts={nfts} />
-    </div>
+    </>
   )
 }
