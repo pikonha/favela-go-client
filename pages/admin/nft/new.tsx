@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useState } from "react"
 import CTAButton from "../../../components/CTAButton"
-import { pinataCreds } from "../../../util";
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -11,7 +10,6 @@ export default function NewNFTForm() {
   const [file, fileSet] = useState<String>()
   const [fileBlob, fileBlobSet] = useState<Blob>()
   const [location, locationSet] = useState<String>()
-  // const { fileResult } = useUpload();
   
   async function uploadImage(){
     const metadata = JSON.stringify({
@@ -21,7 +19,6 @@ export default function NewNFTForm() {
     
     if(resp.status != 200)
     {
-      console.log(resp);
       return null;
     }
     return resp.data.IpfsHash;

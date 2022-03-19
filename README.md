@@ -8,13 +8,14 @@
   - [X] List NFTs
     - [X] list
     - [ ] map
-  - [ ] NFT details
+  - [X] NFT details
 - [ ] Admin
-  - [ ] Create a new NFT
-    - [ ] map
-    - [ ] image
-    - [ ] name
-    - [ ] enabled
+  - [X] Upload new NFT on pinata
+    - [X] map
+    - [X] image
+    - [X] name
+    - [X] enabled
+  - [ ] Create a new NFT on smart contract
   - [X] List NFTs
   - [ ] Pause generation of new NFTs
   - [ ] Generate QR Code on click

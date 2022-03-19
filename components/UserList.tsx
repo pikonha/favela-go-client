@@ -29,9 +29,8 @@ export default function UserList() {
   useEffect(() => {
     async function awaitAccount() {
       if (contract) {
-        const n = await ipfs.getNftsFromAccount(contract, account)
-        console.log(n)
-        nftsSet(n)
+        const nft = await ipfs.getNftsFromAccount(contract, account)
+        nftsSet(nft)
       }
     }
     awaitAccount()

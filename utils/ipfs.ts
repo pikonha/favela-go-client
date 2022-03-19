@@ -3,7 +3,6 @@ import { BigNumber } from 'ethers'
 
 import { ERC20 } from "../contracts/types"
 import { ipfsURL } from '../config'
-import { NFT } from '../components/NFTList'
 
 const getUrl = (nftIpfsUrl) => {
   const [,ipfsId] = nftIpfsUrl.split('//')
