@@ -6,11 +6,8 @@ import useENSName from "../hooks/useENSName";
 import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
 import { formatEtherscanLink, shortenHex } from "../util";
 
-type AccountProps = {
-  triedToEagerConnect: boolean;
-};
 
-const Account = ({ triedToEagerConnect }: AccountProps) => {
+const Account = () => {
   const { active, error, activate, chainId, account, setError } =
     useWeb3React();
 
@@ -36,35 +33,35 @@ const Account = ({ triedToEagerConnect }: AccountProps) => {
     return null;
   }
 
-  if (!triedToEagerConnect) {
-    return null;
+  async function handleConnect() {
+    setConnecting(true);
+
+    try {
+      await activate(injected, undefined, true)
+    } catch (error) {
+        // ignore the error if it's a user rejected request
+        if (error instanceof UserRejectedRequestError) {
+          setConnecting(false);
+        } else {
+          setError(error);
+        }
+    }
   }
 
   if (typeof account !== "string") {
     return (
-      <div>
+      <>
         {isWeb3Available ? (
           <button
             disabled={connecting}
-            onClick={() => {
-              setConnecting(true);
-
-              activate(injected, undefined, true).catch((error) => {
-                // ignore the error if it's a user rejected request
-                if (error instanceof UserRejectedRequestError) {
-                  setConnecting(false);
-                } else {
-                  setError(error);
-                }
-              });
-            }}
+            onClick={handleConnect}
           >
             {isMetaMaskInstalled ? "Connect to MetaMask" : "Connect to Wallet"}
           </button>
         ) : (
           <button onClick={startOnboarding}>Install Metamask</button>
         )}
-      </div>
+      </>
     );
   }
 
