@@ -10,32 +10,40 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
     async function handlerScan(result, error) {
         if (error) {
             console.error(error)
-            setError(error.message)
+            setError("No QR Code at the camera, please scan the QR Code")
             return
         }
 
-        const idNFT = result?.id;
-        if (idNFT) {
-            
+        if (!result) {
+            console.error(error)
+            setError("NFT Identifier is null, verify the QR Code")
+            return
+        }
+
+        const obj = JSON.parse(result.text)
+        const { id, lat, lng } = obj;
+        if (id !== null && id !== undefined) {
             // TODO: verify the geolocation cords
 
             try {
-                setData(idNFT)
+                setData(id)
 
-                await contract.safeMint(address, result.id)
-                alert(`NFT ${idNFT} minted with success :D`)
+                console.log(`ID ${id} para o address ${address}`)
+
+                const txHash = await contract.safeMint(address, id)
+                alert(`NFT ${id} minted with success - '${txHash}' =D`)
             } catch (err) {
                 console.error(err)
             }
+        } else {
+            setData("No info QR Code");
         }
-
-        setData("No info QR Code");
     }
 
     return (
         <>
             <QrReader
-                scanDelay={100}
+                scanDelay={500}
                 onResult={handlerScan}
                 constraints={{ facingMode: 'user' }}
                 videoStyle={{ width: '50%' }}

@@ -7,14 +7,14 @@ import CTAButton from "./CTAButton";
 import NFTList, { NFT } from "../components/NFTList";
 import QrReader from "./QrContainerReader";
 
-const nftAddress = "0xB9A7083C98278a0E3D236F1E5cCbD5A326D0b624"
+import { contractHash } from '../config'
 
 export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
   const [scanReaderEnabled, scanReaderEnabledSet] = useState(false)
 
-  const contract = useTokenContract(nftAddress)
+  const contract = useTokenContract(contractHash)
   const IPFS = useIPFS()
 
   function openScanQRCode() {
