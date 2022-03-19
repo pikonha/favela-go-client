@@ -1,11 +1,14 @@
 import { QrReader } from 'react-qr-reader';
 
-import React, { useState } from "react";
-import { ERC20 } from '../contracts/types';
+import React, { useState } from "react"
+import { ERC20 } from '../contracts/types'
 
 const QrContainer = ({ contract, address }: { contract: ERC20, address: string }) => {
     const [data, setData] = useState('No result');
+    const [txHash, setTxHash] = useState('');
     const [error, setError] = useState('');
+    const [processing, setProcessing] = useState(false)
+    const [showDialog, setDialog] = useState(false)
 
     async function handlerScan(result, error) {
         if (error) {
@@ -15,51 +18,94 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
         }
 
         if (!result) {
-            console.error(error)
+            console.error(result)
             setError("NFT Identifier is null, verify the QR Code")
             return
         }
 
-        const obj = JSON.parse(result.text)
-        const { id, lat, lng } = obj;
-        if (id !== null && id !== undefined) {
+        const { id, lat, lng } = JSON.parse(result.text)
+        if (id !== null && id !== undefined && !processing) {
             // TODO: verify the geolocation cords
 
             try {
                 setData(id)
-
+                setProcessing(true)
                 console.log(`ID ${id} para o address ${address}`)
 
-                const txHash = await contract.safeMint(address, id)
-                alert(`NFT ${id} minted with success - '${txHash}' =D`)
+                const result = await contract.safeMint(address, id)
+                alert(`NFT ${id} minted with success =D`)
+                setTxHash(result.hash)
             } catch (err) {
                 console.error(err)
             }
         } else {
-            setData("No info QR Code");
+            console.log(`its processing or Id is null - ${id}`)
         }
     }
 
     return (
         <>
-            <QrReader
-                scanDelay={500}
-                onResult={handlerScan}
-                constraints={{ facingMode: 'user' }}
-                videoStyle={{ width: '50%' }}
-                videoContainerStyle={{
-                    height: 300,
-                    width: 300,
-                    display: 'flex',
-                    justifyContent: 'center'
-                }}
-                containerStyle={{}}
-            />
+            {showDialog && (
+                <div className="dialog">
+                    <div className="dialog-content">
+                        <div className="close">
+                            <button
+                                onClick={() => {
+                                    setError(null);
+                                    setDialog(false);
+                                    setProcessing(false);
+                                }}
+                            >
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M6 18L18 6M6 6l12 12"
+                                    />
+                                </svg>
+                            </button>
+                        </div>
+                        {error && (
+                            <div className="errorMessage">
+                                <h2>{error}</h2>
+                            </div>
+                        )}
+                        {txHash && (
+                            <div className="description">
+                                <h4 className="title">Transaction hash</h4>
+                                <div className="detail detail-first-child">
+                                    <h6 className="detail-content green">{txHash}</h6>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            )}
+            {!showDialog && !processing && (
+                <div>
+                    <QrReader
+                        scanDelay={500}
+                        onResult={handlerScan}
+                        constraints={{ facingMode: 'user' }}
+                        videoStyle={{ width: '50%' }}
+                        videoContainerStyle={{
+                            height: 300,
+                            width: 300,
+                            display: 'flex',
+                            justifyContent: 'center'
+                        }}
+                        containerStyle={{}}
+                    />
+                </div>
+            )}
             <p>
                 {data}
-            </p>
-            <p>
-                {error}
             </p>
         </>
     );

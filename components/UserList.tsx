@@ -39,7 +39,7 @@ export default function UserList() {
             handleClick={openScanQRCode}
           />
 
-          <CTAButton value=" Close QR Code"
+          <CTAButton value="Close QR Code"
             handleClick={closeQRCode}
           />
         </div>
