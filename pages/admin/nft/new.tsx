@@ -1,22 +1,65 @@
+import axios from "axios";
+import { randomUUID } from "crypto";
 import { useState } from "react"
 import CTAButton from "../../../components/CTAButton"
+import useUpload from "../../../hooks/useUpload";
+import { pinataCreds } from "../../../util";
+import { v4 as uuidv4 } from 'uuid';
+
+export async function getStaticProps() {
+  return {
+    pinata_api_key: String(process.env.API_Key),
+    pinata_secret_api_key: String(process.env.API_Secret),
+  };
+  // ...
+}
 
 export default function NewNFTForm() {
   const [name, nameSet] = useState<String>()
   const [enabled, enabledSet] = useState<Boolean>(false)
   const [file, fileSet] = useState<String>()
   const [location, locationSet] = useState<String>()
+  // const { fileResult } = useUpload();
   
   function returnJson(){
     const obj = {
       name: name,
       image: file,
-      details: location,
+      description: location,
       hidden: enabled
     }
-    
-    // console.log(JSON.stringify(obj));
+    const json = JSON.stringify(obj);
+    const blob = new Blob([json], {
+      type: 'application/json',
+    });
+    const metadata = JSON.stringify({
+      name: uuidv4(),
+    });
+    pinFile(blob, metadata).then(x => console.log(x));
+    // const resp = useUpload(blob);
   }
+
+  async function pinFile(stream, metadata) {
+    const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
+    const creds = {
+      pinata_api_key: String("0331243f64d660dfd4e9"),
+      pinata_secret_api_key: String("a60562e2190616f28dcaa6c1ca2c3d2a89e21e45754b7d728e41de60b6b1df28"),
+    };
+    
+    let data = new FormData();
+    data.append("file", stream);
+    data.append('pinataMetadata', metadata);
+    const result = await axios.post(url, data, {
+      // maxBodyLength: 'Infinity', //this is needzed to prevent axios from erroring out with large files
+      headers: {
+        "Content-Type": `multipart/form-data;`,
+        pinata_api_key: creds.pinata_api_key,
+        pinata_secret_api_key: creds.pinata_secret_api_key,
+      },
+    });
+    return result;
+  }
+  
 
   return (
     <div className="mx-4">
@@ -81,7 +124,7 @@ export default function NewNFTForm() {
         <div className="md:flex md:items-center">
           <div className="md:w-1/3"></div>
           <div className="md:w-2/3">
-            <CTAButton value="Confimar" handleClick={() => {returnJson()}} />
+            <CTAButton value="Confimar" handleClick={returnJson} />
           </div>
         </div>
       </form>

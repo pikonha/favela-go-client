@@ -13,7 +13,7 @@ export default function UserList() {
   const router = useRouter()
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
-  
+
   const contract = useTokenContract(nftAddress)
   const IPFS = useIPFS()
   
