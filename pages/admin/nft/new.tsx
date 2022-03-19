@@ -34,7 +34,7 @@ export default function NewNFTForm() {
       name: name,
       image: `ipfs://${imageHash}`,
       description: location,
-      hidden: enabled
+      hidden: !enabled,
     }
     const json = JSON.stringify(obj);
     const blob = new Blob([json], {
