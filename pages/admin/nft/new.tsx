@@ -2,6 +2,9 @@ import axios from "axios";
 import { useState } from "react"
 import CTAButton from "../../../components/CTAButton"
 import { v4 as uuidv4 } from 'uuid';
+import useTokenContract from "../../../hooks/useTokenContract";
+import { contractHash } from "../../../config";
+import { error } from "console";
 
 
 export default function NewNFTForm() {
@@ -10,23 +13,24 @@ export default function NewNFTForm() {
   const [file, fileSet] = useState<String>()
   const [fileBlob, fileBlobSet] = useState<Blob>()
   const [location, locationSet] = useState<String>()
+  const contract = useTokenContract(contractHash)
   
-  async function uploadImage(){
+  async function uploadFile(blob){
     const metadata = JSON.stringify({
       name: uuidv4(),
     });
-    const resp = await pinFile(fileBlob, metadata);
-    
+    const resp = await pinFile(blob, metadata);
     if(resp.status != 200)
     {
-      return null;
+      console.log(resp);
+      throw Error("Error on upload");
     }
     return resp.data.IpfsHash;
   }
 
   async function returnJson(){
-    const imageHash = await uploadImage();
-    if(imageHash == null) throw Error("Image Hash cannot be null");
+    const imageHash = await uploadFile(fileBlob);
+
     const obj = {
       name: name,
       image: `ipfs://${imageHash}`,
@@ -38,11 +42,12 @@ export default function NewNFTForm() {
       type: 'application/json',
     });
 
-    const metadata = JSON.stringify({
-      name: uuidv4(),
-    });
-    pinFile(blob, metadata).then(x => console.log(x));
+    const finalFileHash = await uploadFile(blob);
+    const addItemTranscation = await contract.AddItem(finalFileHash, true);
+    console.log(addItemTranscation);
   }
+
+  
   
   async function pinFile(stream, metadata) {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
