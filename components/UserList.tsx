@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 
 import useTokenContract from "../hooks/useTokenContract";
-import ipfs from "../utils/ipfs";
+import * as ipfs from "../utils/ipfs";
 import CTAButton from "./CTAButton";
 import NFTList, { NFT } from "./NFTList";
 import QrReader from "./QrContainerReader";

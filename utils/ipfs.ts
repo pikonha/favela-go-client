@@ -32,6 +32,16 @@ async function getNftsFromAccount(contract: ERC20, account: string) {
     // lng: n.data.lng,
   }));
 }
+async function getNftTypes(contract: ERC20, account: string) {
+  if (!contract) {
+    return;
+  }
+  const allItems = await contract.getAllItems();
+  return allItems.map((n, i) => ({
+    ipfsId: n.ipfsId,
+    canMint: n.canMint,
+  }));
+}
 
 async function getNftById(contract: ERC20, id: BigNumber) {
   if (!contract) {
@@ -41,12 +51,8 @@ async function getNftById(contract: ERC20, id: BigNumber) {
   const nftRes = await axios.get(`${getUrlWithGateway(tokenUri)}`);
   return nftRes.data;
 }
-
-export function getUrlWithGateway(tokenUri) {
+function getUrlWithGateway(tokenUri) {
   return `${ipfsURL}/${getUrl(tokenUri)}`;
 }
 
-export default {
-  getNftsFromAccount,
-  getNftById,
-};
+export { getNftsFromAccount, getNftById, getNftTypes, getUrlWithGateway };
