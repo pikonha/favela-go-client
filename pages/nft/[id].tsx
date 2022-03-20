@@ -28,7 +28,7 @@ export default function Nft() {
     const fetchNft = async () => {
       if (contract) {
         loadingSet(true)
-        const nft = await ipfs.getNftById(contract, idNft)
+        const nft = !isMinter() ? await ipfs.getNftById(contract, idNft) : await ipfs.getTemplateById(contract,idNft);
         nftSet({...nft, id: idNft})
         loadingSet(false)
       }

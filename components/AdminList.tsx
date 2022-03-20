@@ -21,7 +21,7 @@ export default function AdminList() {
     async function awaitAccount() {
       if (contract) {
         loadingSet(true)
-        const nfts = await ipfs.getNftTypes(contract)
+        const nfts = await ipfs.getNftTemplates(contract)
         if (nfts) nftsSet(nfts);
         loadingSet(false)
       }
