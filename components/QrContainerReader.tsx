@@ -1,8 +1,14 @@
 import { QrReader } from 'react-qr-reader';
 
 import React, { useState } from "react"
+import { MdAutorenew } from "react-icons/md";
 import { ERC20 } from '../contracts/types'
 import Router, { useRouter } from 'next/router';
+
+const cameraType = {
+    BACK: "environment",
+    FRONT: "user"
+}
 
 const QrContainer = ({ contract, address }: { contract: ERC20, address: string }) => {
     const [data, setData] = useState('No result');
@@ -11,6 +17,15 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
     const [processing, setProcessing] = useState(false)
     const [showDialog, setDialog] = useState(false)
     const router = useRouter();
+    const [selectedCamera, setSelectedCamera] = useState(cameraType.BACK)
+
+    function changeCamera() {
+        if (selectedCamera == cameraType.BACK) {
+            setSelectedCamera(cameraType.FRONT)
+        } else {
+            setSelectedCamera(cameraType.BACK)
+        }
+    }
 
     async function handlerScan(result, error) {
         if (error) {
@@ -91,10 +106,19 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
             )}
             {!showDialog && !processing && (
                 <div>
+                    <div className='flex justify-center itens-center'>
+                        <MdAutorenew
+                            size={36}
+                            color="#EBEBE4"
+                            onClick={changeCamera}
+                        />
+                    </div>
+
+
                     <QrReader
                         scanDelay={500}
                         onResult={handlerScan}
-                        constraints={{ facingMode: 'user' }}
+                        constraints={{ facingMode: selectedCamera }}
                         videoStyle={{
                             width: '100%',
                             align: 'center'
