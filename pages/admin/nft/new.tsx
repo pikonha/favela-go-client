@@ -166,7 +166,9 @@ export default function NewNFTForm() {
         <div className="md:flex md:items-center">
           <div className="md:w-1/3"></div>
           <div className="md:w-2/3">
-            <CTAButton value="Confimar" handleClick={returnJson} />
+            <CTAButton handleClick={returnJson}>
+              Confirmar
+            </CTAButton>
           </div>
         </div>
       </form>
