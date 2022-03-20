@@ -22,7 +22,7 @@ async function getNftsFromAccount(contract: ERC20, account: string, limit: numbe
   ids = ids.slice(offset, offset+limit)
   const ipfsUrls = await Promise.all(ids.map(id => contract.tokenURI(id)))
   const nfts = await Promise.all(ipfsUrls.map(url => axios.get<NFT>(`${ipfsURL}/${getUrl(url)}`)))
-  return nfts.map(({data}) => data)
+  return nfts.map(({data}, i) => ({...data, id: ids[i]}))
 }
 
 async function getNftById(contract: ERC20, id: BigNumber) {

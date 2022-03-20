@@ -19,10 +19,9 @@
   - [ ] Create a new NFT on smart contract
   - [X] List NFTs
   - [X] Pause generation of new NFTs
-      - [ ] Tests
+    - [ ] Tests
   - [X] Generate QR Code on click
-    - [ ] export as png/jpg
-    - [ ] share the image
+    - [X] export as png/jpg
 
 ## Features
 

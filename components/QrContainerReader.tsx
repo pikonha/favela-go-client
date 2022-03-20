@@ -36,6 +36,7 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
                 alert(`NFT ${id} minted with success =D`)
                 setTxHash(result.hash)
             } catch (err) {
+                setProcessing(false)
                 console.error(err)
             }
         } else {
