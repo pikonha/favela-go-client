@@ -9,15 +9,18 @@ const getUrl = (nftIpfsUrl) => {
   return ipfsId;
 };
 
-async function getNftsFromAccount(contract: ERC20, account: string) {
+async function totalOfNftsByAccount(contract: ERC20, account: string) {
+  return Number(await contract.balanceOf(account))
+}
+
+async function getNftsFromAccount(contract: ERC20, account: string, limit: number = 10, offset: number = 0) {
   if (!contract) {
     return;
   }
-  const ids = await contract.getAllNftsIdsByAddress(account);
-  const ipfsUrls = await Promise.all(ids.map((id) => contract.tokenURI(id)));
-  const nfts = await Promise.all(
-    ipfsUrls.map((url) => axios.get(`${ipfsURL}/${getUrl(url)}`))
-  );
+  let ids = await contract.getAllNftsIdsByAddress(account)
+  ids = ids.slice(offset, offset+limit)
+  const ipfsUrls = await Promise.all(ids.map(id => contract.tokenURI(id)))
+  const nfts = await Promise.all(ipfsUrls.map(url => axios.get(`${ipfsURL}/${getUrl(url)}`)))
   return nfts.map((n, i) => ({
     url: n.data.image,
     name: n.data.name,
@@ -40,4 +43,5 @@ async function getNftById(contract: ERC20, id: BigNumber) {
 export default {
   getNftsFromAccount,
   getNftById,
-};
+  totalOfNftsByAccount
+}
