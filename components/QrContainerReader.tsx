@@ -2,6 +2,7 @@ import { QrReader } from 'react-qr-reader';
 
 import React, { useState } from "react"
 import { ERC20 } from '../contracts/types'
+import Router, { useRouter } from 'next/router';
 
 const QrContainer = ({ contract, address }: { contract: ERC20, address: string }) => {
     const [data, setData] = useState('No result');
@@ -9,6 +10,7 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
     const [error, setError] = useState('');
     const [processing, setProcessing] = useState(false)
     const [showDialog, setDialog] = useState(false)
+    const router = useRouter();
 
     async function handlerScan(result, error) {
         if (error) {
@@ -34,7 +36,9 @@ const QrContainer = ({ contract, address }: { contract: ERC20, address: string }
             } catch (err) {
                 console.error(err)
             } finally {
+                await new Promise(resolve => setTimeout(resolve, 3000));
                 setProcessing(false)
+                router.reload();
             }
         } else {
             console.log(`its processing or Id is null - ${id}`)
