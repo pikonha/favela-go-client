@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import saveSvgAsPng from 'save-svg-as-png'
 import { MdQrCodeScanner} from "react-icons/md";
+import ReactLoading from 'react-loading';
 
 import { contractHash } from '../../config'
 import useTokenContract from "../../hooks/useTokenContract";
@@ -14,6 +15,7 @@ import { NFT } from "../../utils/types";
 
 export default function Nft() {
   const [nft, nftSet] = useState<NFT>()
+  const [loading, loadingSet] = useState(true)
   const contract = useTokenContract(contractHash)
   const [showQrCode, enableShowQrCode] = useState(false)
 
@@ -25,19 +27,21 @@ export default function Nft() {
   useEffect(() => {
     const fetchNft = async () => {
       if (contract) {
+        loadingSet(true)
         const nft = await ipfs.getNftById(contract, idNft)
-        nftSet(nft)
+        nftSet({...nft, id: idNft})
+        loadingSet(false)
       }
     }
     fetchNft()
-  }, [contract, idNft])
+  }, [contract])
+
+  useEffect(() => {
+    loadingSet(!contract || !nft)
+  }, [contract])
 
   function handleReturn() {
     return router.back()
-  }
-
-  if (!nft || !contract) {
-    return <span>Loading...</span>
   }
 
   function generateQrCode() {
@@ -71,10 +75,18 @@ export default function Nft() {
     return JSON.stringify({id,lat,lng})
   }
 
+  if (loading) {
+    return (
+      <div className="flex justify-center">
+        <ReactLoading type="spinningBubbles" color="#D33DD6" height={50} width={50} />
+      </div>
+    )
+  }
+
   return (
     <>
       <div className="flex flex-col">
-        <div className="mx-auto mt-6 h-64 w-64">
+        <div className="mx-auto mt-6 h-52 w-52">
           {showQrCode ? (
             <QrGenerator id={getIdQrCode()} value={serializeNft()}></QrGenerator>
           ): (
@@ -90,7 +102,7 @@ export default function Nft() {
           <div className="flex">
             <h3 className="font-semibold text-lg leading-tight truncate mr-2">{nft.name}</h3>
             <span>
-              #{nft.id}
+              #{nft.id.toString()}
             </span>
           </div>
           <p className="text-sm text-gray-600 tracking-wide font-semibold mt-2 break-words">

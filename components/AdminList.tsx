@@ -28,19 +28,17 @@ export default function AdminList() {
     }
     awaitAccount()
   }, [contract, account])
+
+  if (loading) {
+    return <ReactLoading type={"spinningBubbles"} color={"#D33DD6"} height={50} width={50} />
+  }
   
   return (
     <>
-    {loading ? (
-        <ReactLoading type={"spinningBubbles"} color={"#D33DD6"} height={50} width={50} />
-      ):( 
-      <>
-        <CTAButton handleClick={() => router.push("/admin/nft/new")}>
-          Criar nova atração
-        </CTAButton>
-        <NFTList nfts={nfts} />
-      </>
-    )}
+      <CTAButton handleClick={() => router.push("/admin/nft/new")}>
+        Criar nova atração
+      </CTAButton>
+      <NFTList nfts={nfts} />
     </>
   )
 }

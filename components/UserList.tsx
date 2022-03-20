@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useWeb3React } from "@web3-react/core";
 import { MdOutlineNavigateNext, MdOutlineNavigateBefore, MdQrCodeScanner} from "react-icons/md";
+import ReactLoading from 'react-loading';
 
 import useTokenContract from "../hooks/useTokenContract";
 import ipfs from "../utils/ipfs";
@@ -83,20 +84,22 @@ export default function UserList() {
         </div>
 
         <div className="grid grid-cols-2 my-4">
-          {offset != 0 ? (
             <MdOutlineNavigateBefore 
               size={36}
-              onClick={() => offsetSet(offset => offset - limit) }
+              color={offset != 0 ? "#161c22" : "#EBEBE4"}
+              onClick={() => offset != 0 && offsetSet(offset => offset - limit) }
             />
-          ) : <div className="w-8 h-8"/>}
-          {offset + limit < nftLen && (
             <MdOutlineNavigateNext
               size={36}
-              onClick={() => offsetSet(offset => offset + limit) }
+              color={offset + limit < nftLen ? "#161c22" : "#EBEBE4"}
+              onClick={() => offset + limit < nftLen && offsetSet(offset => offset + limit) }
             />
-          )}
         </div>
-        {loading ? <span>Loading...</span> : <NFTList nfts={nfts} />}
+
+        {loading ? 
+          <ReactLoading type={"spinningBubbles"} color={"#D33DD6"} height={50} width={50} /> : 
+          <NFTList nfts={nfts} 
+        />}
       </div>
     </>
   )

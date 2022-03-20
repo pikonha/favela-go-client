@@ -37,7 +37,7 @@ async function getNftsByIds(
   }));
 }
 
-async function getNftById(contract: ERC20, id: BigNumber) {
+async function getNftById(contract: ERC20, id: BigNumber) : Promise<NFT|null>{
   if (!contract) {
     return;
   }
