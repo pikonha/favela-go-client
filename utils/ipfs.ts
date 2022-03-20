@@ -46,6 +46,30 @@ async function getNftById(contract: ERC20, id: BigNumber) {
   return {...nftRes.data, image: getUrlWithGateway(nftRes.data.image)};
 }
 
+async function getNftTypes(contract: ERC20) {
+  if (!contract) {
+    return;
+  }
+  const ids = await contract.getAllItems();
+  console.log(ids);
+  const nftTypes = await Promise.all(
+    ids.map((x) => {
+      return axios.get(`${getUrlWithGateway(x.ipfsId)}`);
+    })
+  );
+
+  return nftTypes.map((n, i) => ({
+    image: getUrlWithGateway(n.data.image),
+    name: n.data.name,
+    ipfsId: ids[i].ipfsId,
+    canMint: ids[i].canMint,
+    id: ids[i].id,
+    lat : n.data.lat,
+    lng : n.data.lng,
+    description: n.data.description
+  }));
+}
+
 function getUrlWithGateway(tokenUri) {
   return `${ipfsURL}/${getUrl(tokenUri)}`;
 }
@@ -55,4 +79,5 @@ export default {
   getNftById,
   totalOfNftsByAccount,
   getUrlWithGateway,
+  getNftTypes,
 };

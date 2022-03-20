@@ -18,9 +18,7 @@ export default function AdminList() {
   useEffect(() => {
     async function awaitAccount() {
       if (contract) {
-        const items = await contract.getAllItems();
-        const ids = items.map(i => i.id)
-        const nfts = await ipfs.getNftsByIds(contract, ids)
+        const nfts = await ipfs.getNftTypes(contract)
         if (nfts) nftsSet(nfts);
       }
     }

@@ -10,4 +10,5 @@ export interface NFT {
   lat: Number,
   lng: Number,
   canMint?: Boolean,
+  ipfsId?: String
 }
