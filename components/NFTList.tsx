@@ -7,7 +7,7 @@ type NFTListProps = {
   isAdmin?: Boolean
 }
 
-function NFTCard({ image, id, name }: Pick<NFT, "id" | "image" | "name">) {
+function NFTCard({ image, id }: Pick<NFT, "id" | "image" | "name">) {
   const router = useRouter()
   return (
     <a className="w-32 h-32 mx-auto rounded-md bg-cover bg-top bg-no-repeat"
@@ -15,9 +15,7 @@ function NFTCard({ image, id, name }: Pick<NFT, "id" | "image" | "name">) {
         backgroundImage: `url(${image})`,
       }}
       onClick={() => router.push(`/nft/${id.toString()}`)}
-    >
-      
-    </a>
+    />
   )
 }
 

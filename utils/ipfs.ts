@@ -51,7 +51,6 @@ async function getNftTypes(contract: ERC20) {
     return;
   }
   const ids = await contract.getAllItems();
-  console.log(ids);
   const nftTypes = await Promise.all(
     ids.map((x) => {
       return axios.get(`${getUrlWithGateway(x.ipfsId)}`);
