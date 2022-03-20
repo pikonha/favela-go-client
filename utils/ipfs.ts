@@ -11,6 +11,7 @@ const getUrl = (nftIpfsUrl) => {
 };
 
 async function totalOfNftsByAccount(contract: ERC20, account: string) {
+  if (!contract) return 0
   return Number(await contract.balanceOf(account))
 }
 
