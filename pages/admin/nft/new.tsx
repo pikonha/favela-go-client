@@ -4,8 +4,6 @@ import CTAButton from "../../../components/CTAButton"
 import { v4 as uuidv4 } from 'uuid';
 import useTokenContract from "../../../hooks/useTokenContract";
 import { contractHash } from "../../../config";
-import { error } from "console";
-
 
 export default function NewNFTForm() {
   const [name, nameSet] = useState<String>()
@@ -30,24 +28,20 @@ export default function NewNFTForm() {
     return resp.data.IpfsHash;
   }
 
-  async function returnJson(){
-    const imageHash = await uploadFile(fileBlob);
-
-    const obj = {
-      name: name,
-      image: `ipfs://${imageHash}`,
-      description: detalhes,
-      lat: latitude,
-      lng: longitude,
-    }
-    const json = JSON.stringify(obj);
-    const blob = new Blob([json], {
-      type: 'application/json',
-    });
-
-    const finalFileHash = await uploadFile(blob);
-    const addItemTranscation = await contract.AddItem(finalFileHash, true);
-    console.log(addItemTranscation);
+  function returnJson(){
+    uploadFile(fileBlob).then(imageHash => {
+      const obj = {
+        name: name,
+        image: `ipfs://${imageHash}`,
+        description: detalhes,
+        lat: latitude,
+        lng: longitude,
+      }
+      const json = JSON.stringify(obj);
+      return new Blob([json], {
+        type: 'application/json',
+      });
+    }).then(uploadFile).then(finalFileHash => contract.AddItem(finalFileHash, true))
   }
   
   async function pinFile(stream, metadata) {
