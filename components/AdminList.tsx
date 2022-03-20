@@ -3,7 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import {useRouter}  from 'next/router';
 
 import { contractHash } from '../config'
-import * as ipfs from "../utils/ipfs";
+import ipfs from "../utils/ipfs";
 import CTAButton from "./CTAButton";
 import useTokenContract from "../hooks/useTokenContract";
 import NFTTypes, { NFTType } from "./NFTTypes";

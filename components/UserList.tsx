@@ -3,7 +3,7 @@ import { useWeb3React } from "@web3-react/core";
 import { MdOutlineNavigateNext, MdOutlineNavigateBefore, MdQrCodeScanner} from "react-icons/md";
 
 import useTokenContract from "../hooks/useTokenContract";
-import * as ipfs from "../utils/ipfs";
+import ipfs from "../utils/ipfs";
 import CTAButton from "./CTAButton";
 import NFTList from "./NFTList";
 import QrReader from "./QrContainerReader";

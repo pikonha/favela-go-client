@@ -1,7 +1,7 @@
 import { BigNumber } from "ethers";
 import { useRouter } from "next/router";
 import { ipfsURL } from "../config";
-import * as ipfs from "../utils/ipfs"
+import ipfs from "../utils/ipfs"
 
 export type NFTType = {
   image: String,

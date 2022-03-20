@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { getUrlWithGateway } from "../utils/ipfs"
 
 import { NFT } from "../utils/types";
 

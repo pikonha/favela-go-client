@@ -70,6 +70,7 @@ function getUrlWithGateway(tokenUri) {
 export default {
   getNftsFromAccount,
   getNftById,
+  getNftTypes,
   totalOfNftsByAccount,
   getUrlWithGateway,
 };
