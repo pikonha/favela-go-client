@@ -1,17 +1,13 @@
-import { BigNumber } from "ethers";
 import { useRouter } from "next/router";
 
-type NFT = {
-  image: String,
-  id: BigNumber
-}
+import { NFT } from "../utils/types";
 
 type NFTListProps = {
   nfts: NFT[],
   isAdmin?: Boolean
 }
 
-function NFTCard({ image, id }: NFT) {
+function NFTCard({ image, id }: Pick<NFT, "id"| "image">) {
   const router = useRouter()
 
   return (
