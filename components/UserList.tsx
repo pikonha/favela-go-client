@@ -10,7 +10,6 @@ import QrReader from "./QrContainerReader";
 import { contractHash } from '../config'
 import { NFT } from "../utils/types";
 
-
 export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
   const { account } = useWeb3React();
@@ -42,8 +41,9 @@ export default function UserList() {
     (async function() {
       loadingSet(true)
       if (contract) {
-        const nft = await ipfs.getNftsFromAccount(contract, account, limit, offset)
-        nftsSet(nft)
+        let ids = await contract.getAllNftsIdsByAddress(account);
+        const nfts = await ipfs.getNftsByIds(contract, ids, limit, offset)
+        nftsSet(nfts)
       }
       loadingSet(false)
     })()

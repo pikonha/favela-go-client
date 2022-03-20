@@ -9,4 +9,5 @@ export interface NFT {
   image: String,
   lat: Number,
   lng: Number,
+  canMint?: Boolean,
 }
