@@ -9,12 +9,14 @@ import { error } from "console";
 
 export default function NewNFTForm() {
   const [name, nameSet] = useState<String>()
-  const [enabled, enabledSet] = useState<Boolean>(false)
   const [file, fileSet] = useState<String>()
+  const [enabled, enabledSet] = useState<Boolean>(false)
+  const [latitude, latitudeSet] = useState<String>()
+  const [longitude, longitudeSet] = useState<String>()
   const [fileBlob, fileBlobSet] = useState<Blob>()
-  const [location, locationSet] = useState<String>()
+  const [detalhes, detalhesSet] = useState<String>()
   const contract = useTokenContract(contractHash)
-  
+
   async function uploadFile(blob){
     const metadata = JSON.stringify({
       name: uuidv4(),
@@ -34,8 +36,9 @@ export default function NewNFTForm() {
     const obj = {
       name: name,
       image: `ipfs://${imageHash}`,
-      description: location,
-      hidden: !enabled,
+      description: detalhes,
+      lat: latitude,
+      lng: longitude,
     }
     const json = JSON.stringify(obj);
     const blob = new Blob([json], {
@@ -46,8 +49,6 @@ export default function NewNFTForm() {
     const addItemTranscation = await contract.AddItem(finalFileHash, true);
     console.log(addItemTranscation);
   }
-
-  
   
   async function pinFile(stream, metadata) {
     const url = `https://api.pinata.cloud/pinning/pinFileToIPFS`;
@@ -92,14 +93,42 @@ export default function NewNFTForm() {
         <div className="md:flex md:items-center mb-6">
           <div className="md:w-1/3">
             <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-password">
-              Localização
+              Detalhes
             </label>
           </div>
           <div className="md:w-2/3">
             <input className="appearance-none border-2 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none"
               type="text"
               required={true}
-              onChange={e => locationSet(e.target.value)}
+              onChange={e => detalhesSet(e.target.value)}
+          />
+          </div>
+        </div>        
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-password">
+              Latitude:
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input className="appearance-none border-2 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none"
+              type="text"
+              required={true}
+              onChange={e => latitudeSet(e.target.value)}
+          />
+          </div>
+        </div>        
+        <div className="md:flex md:items-center mb-6">
+          <div className="md:w-1/3">
+            <label className="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" htmlFor="inline-password">
+              Longitude:
+            </label>
+          </div>
+          <div className="md:w-2/3">
+            <input className="appearance-none border-2 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none"
+              type="text"
+              required={true}
+              onChange={e => longitudeSet(e.target.value)}
           />
           </div>
         </div>
@@ -144,3 +173,5 @@ export default function NewNFTForm() {
     </div>
   )
 }
+
+
