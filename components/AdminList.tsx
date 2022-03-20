@@ -4,9 +4,10 @@ import {useRouter}  from 'next/router';
 
 import { contractHash } from '../config'
 import ipfs from "../utils/ipfs";
-import NFTList, {NFT} from "./NFTList";
+import NFTList from "./NFTList";
 import CTAButton from "./CTAButton";
 import useTokenContract from "../hooks/useTokenContract";
+import { NFT } from "../utils/types";
 
 export default function AdminList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
@@ -16,14 +17,19 @@ export default function AdminList() {
 
   useEffect(() => {
     async function awaitAccount() {
-      if (contract) nftsSet(await ipfs.getNftsFromAccount(contract, account))
+      if (contract) {
+        const nfts = await ipfs.getNftsFromAccount(contract, account)
+        if (nfts) nftsSet(nfts)
+      }
     }
     awaitAccount()
   }, [contract, account])
   
   return (
     <>
-      <CTAButton value="Criar nova atração" handleClick={() => router.push("/admin/nft/new")} />
+      <CTAButton handleClick={() => router.push("/admin/nft/new")}>
+        Criar nova atração
+      </CTAButton>
       <NFTList nfts={nfts} />
     </>
   )

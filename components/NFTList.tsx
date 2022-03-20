@@ -1,8 +1,8 @@
 import { BigNumber } from "ethers";
 import { useRouter } from "next/router";
 
-export type NFT = {
-  url: String,
+type NFT = {
+  image: String,
   id: BigNumber
 }
 
@@ -11,13 +11,13 @@ type NFTListProps = {
   isAdmin?: Boolean
 }
 
-function NFTCard({ url, id }: NFT) {
+function NFTCard({ image, id }: NFT) {
   const router = useRouter()
 
   return (
     <a className="w-32 h-32 mx-auto rounded-md bg-cover bg-top bg-no-repeat"
       style={{
-        backgroundImage: `url(${url})`,
+        backgroundImage: `url(${image})`,
       }}
       onClick={() => router.push(`/nft/${id.toString()}`)}
     >
@@ -29,7 +29,7 @@ export default function NFTList({ nfts }: NFTListProps) {
   return (
     <div className="grid mx-auto grid-cols-2 gap-4">
       {nfts.map((n, i) => (
-        <NFTCard key={i} url={n.url} id={n.id}/>
+        <NFTCard key={i} image={n.image} id={n.id}/>
       ))}
     </div>
   )
