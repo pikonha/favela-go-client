@@ -6,6 +6,7 @@ import { ipfsURL } from "../config";
 
 const getUrl = (nftIpfsUrl) => {
   const [_, ipfsId] = nftIpfsUrl.split("//");
+  if (ipfsId == undefined) return nftIpfsUrl;
   return ipfsId;
 };
 
@@ -38,14 +39,11 @@ async function getNftTypes(contract: ERC20, account: string) {
     return;
   }
   const ids = await contract.getAllItems();
-
   const nftTypes = await Promise.all(
     ids.map((x) => {
       return axios.get(`${getUrlWithGateway(x.ipfsId)}`);
     })
   );
-
-  console.log(nftTypes);
 
   return nftTypes.map((n, i) => ({
     image: n.data.image,
@@ -64,11 +62,13 @@ async function getNftById(contract: ERC20, id: BigNumber) {
   const nftRes = await axios.get(`${getUrlWithGateway(tokenUri)}`);
   return nftRes.data;
 }
+
 function getUrlWithGateway(tokenUri) {
-  const ipfsId = getUrl(tokenUri);
-  const returnString = `${ipfsURL}/${ipfsId}`;
-  console.log(returnString == "https://ipfs.io/ipfs/ipfs:");
-  return returnString;
+  return `${ipfsURL}/${getUrl(tokenUri)}`;
+  // console.log(tokenUri);
+  // const ipfsId = getUrl(tokenUri);
+  // const returnString = `${ipfsURL}/${ipfsId}`;
+  // return returnString;
 }
 
 export { getNftsFromAccount, getNftById, getNftTypes, getUrlWithGateway };

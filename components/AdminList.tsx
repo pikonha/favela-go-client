@@ -10,7 +10,7 @@ import useTokenContract from "../hooks/useTokenContract";
 import NFTTypes, { NFTType } from "./NFTTypes";
 
 export default function AdminList() {
-  const [nfts, nftsSet] = useState<NFT[]>([])
+  // const [nfts, nftsSet] = useState<NFT[]>([])
   const [types, typesSet] = useState<NFTType[]>([])
   const { account } = useWeb3React();
   const contract = useTokenContract(contractHash)
@@ -20,8 +20,8 @@ export default function AdminList() {
     async function awaitAccount() {
       if (contract) {
         // nftsSet(await ipfs.getNftsFromAccount(contract, account))
+        // console.log(getTypes);
         const getTypes = await ipfs.getNftTypes(contract, account);
-        console.log(getTypes);
         typesSet(getTypes);
       }
     }
