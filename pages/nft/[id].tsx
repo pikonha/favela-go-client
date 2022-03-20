@@ -90,10 +90,12 @@ export default function Nft() {
               </p>
             </div>
             <div className="max-w-4/5 mx-auto flex">
-              <button onClick={generateQrCode}
-                className="shadow bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                Gerar QR Code
-              </button>
+              {isMinter() && (
+                <button onClick={generateQrCode}
+                  className="shadow bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                  Gerar QR Code
+                </button>
+              )}
               {isMinter() && (
                 <button onClick={pauseNft}
                   className="shadow bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
@@ -110,25 +112,12 @@ export default function Nft() {
 
         {showQrCode && (
           <div>
-            <div>
-              <QrGenerator value={JSON.stringify(nft)}></QrGenerator>
-              <button onClick={() => enableShowQrCode(false)}
-                className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                Fechar QR Code
-              </button>
-            </div>
-            <p className="text-sm text-gray-600 tracking-wide font-semibold mt-2">
-              {nft.description}
-            </p>
-            <div className="max-w-4/5 mx-auto flex">
-              <button
-                className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                onClick={handleReturn}
-              >
-                Voltar
-              </button>
-            </div>
-          </div >
+            <QrGenerator value={JSON.stringify(nft)}></QrGenerator>
+            <button onClick={() => enableShowQrCode(false)}
+              className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+              Fechar QR Code
+            </button>
+          </div>
         )}
       </div>
     </>
