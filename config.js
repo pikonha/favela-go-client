@@ -1,4 +1,4 @@
 module.exports = {
-    contractHash: "0xe8dD1A6cBebaC668e3C4Dca35e16Da00124B117D",
-    ipfsURL: "https://ipfs.io/ipfs/"
+  contractHash: "0x26e38275d20278220e1c786c5b8088ea6184cfb1",
+  ipfsURL: "https://ipfs.io/ipfs/",
 };

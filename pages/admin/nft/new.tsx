@@ -46,7 +46,7 @@ export default function NewNFTForm() {
     });
 
     const finalFileHash = await uploadFile(blob);
-    const addItemTranscation = await contract.AddItem(finalFileHash, true);
+    const addItemTranscation = await contract.AddItem(finalFileHash, Boolean(enabled));
     console.log(addItemTranscation);
   }
   
