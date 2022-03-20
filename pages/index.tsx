@@ -13,7 +13,9 @@ function Home() {
   return (
     <div className="flex flex-col items-center gap-8">
       {isConnected && (
-        (isMinter && <AdminList />) || (!isMinter && <UserList />)
+        (isMinter && <AdminList />) || 
+        (!isMinter && <UserList />)
+        // <UserList />
       )}
     </div>
   );

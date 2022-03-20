@@ -9,7 +9,6 @@ type NFTListProps = {
 
 function NFTCard({ image, id }: Pick<NFT, "id"| "image">) {
   const router = useRouter()
-
   return (
     <a className="w-32 h-32 mx-auto rounded-md bg-cover bg-top bg-no-repeat"
       style={{

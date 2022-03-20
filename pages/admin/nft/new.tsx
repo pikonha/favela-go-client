@@ -41,7 +41,7 @@ export default function NewNFTForm() {
       return new Blob([json], {
         type: 'application/json',
       });
-    }).then(uploadFile).then(finalFileHash => contract.AddItem(finalFileHash, true))
+    }).then(uploadFile).then(finalFileHash => contract.AddItem(finalFileHash, Boolean(enabled)))
   }
   
   async function pinFile(stream, metadata) {
