@@ -94,17 +94,20 @@ export default function Nft() {
                 className="shadow bg-green-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
                 Gerar QR Code
               </button>
-              <button onClick={pauseNft}
-                className="shadow bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-                Pausar
-              </button>
-              <button className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+              {isMinter() && (
+                <button onClick={pauseNft}
+                  className="shadow bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                  Pausar
+                </button>
+              )}
+              <button onClick={handleReturn}
+                className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
                 Voltar
               </button>
             </div>
           </div>
         )}
-        
+
         {showQrCode && (
           <div>
             <div>
