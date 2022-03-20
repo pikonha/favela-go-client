@@ -1,4 +1,4 @@
 module.exports = {
-    contractHash: process.env.NFT_ADDRESS,
-    ipfsURL: process.env.IPFS_URL
+    contractHash: "0x3748F3499Bcaff5466bFAC5b96042c194E0B18d3",
+    ipfsURL: "https://ipfs.io/ipfs/"
 }
