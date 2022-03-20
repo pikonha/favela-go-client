@@ -5,10 +5,10 @@ import { MdOutlineNavigateNext, MdOutlineNavigateBefore, MdQrCodeScanner} from "
 import useTokenContract from "../hooks/useTokenContract";
 import ipfs from "../utils/ipfs";
 import CTAButton from "./CTAButton";
-import NFTList, { NFT } from "./NFTList";
+import NFTList from "./NFTList";
 import QrReader from "./QrContainerReader";
-
 import { contractHash } from '../config'
+import { NFT } from "../utils/types";
 
 export default function UserList() {
   const [nfts, nftsSet] = useState<NFT[]>([])
@@ -17,7 +17,7 @@ export default function UserList() {
   const [showButtonScanQr, setShowButtonScanQr] = useState(true)
   const [nftLen, nftLenSet] = useState(0)
   const [offset, offsetSet] = useState(0)
-  const [limit] = useState(2)
+  const [limit] = useState(6)
   const contract = useTokenContract(contractHash)
 
   function openScanQRCode() {
