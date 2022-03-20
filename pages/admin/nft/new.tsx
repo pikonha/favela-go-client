@@ -24,7 +24,6 @@ export default function NewNFTForm() {
     });
     const resp = await pinFile(blob, metadata);
     if (resp.status != 200) {
-      console.log(resp);
       throw Error("Error on upload");
     }
     return resp.data.IpfsHash;

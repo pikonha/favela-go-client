@@ -2,7 +2,6 @@ import { useWeb3React } from "@web3-react/core";
 import { UserRejectedRequestError } from "@web3-react/injected-connector";
 import { useEffect, useState } from "react";
 import { injected } from "../connectors";
-import useENSName from "../hooks/useENSName";
 import useMetaMaskOnboarding from "../hooks/useMetaMaskOnboarding";
 import { formatEtherscanLink, shortenHex } from "../util";
 
@@ -26,8 +25,6 @@ const Account = () => {
       stopOnboarding();
     }
   }, [active, error, stopOnboarding]);
-
-  const ENSName = useENSName(account);
 
   if (error) {
     return null;
@@ -73,7 +70,7 @@ const Account = () => {
         rel: "noopener noreferrer",
       }}
     >
-      {ENSName || `Connected with ${shortenHex(account, 5)}`}
+      Connected with {shortenHex(account, 5)}
     </a>
   );
 };
