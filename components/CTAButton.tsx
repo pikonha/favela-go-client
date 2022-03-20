@@ -2,7 +2,7 @@ import { ReactNode } from "react"
 
 interface CTAButtonProps {
   handleClick: () => void
-  children: ReactNode
+  children?: ReactNode
 }
 
 export default function CTAButton({handleClick, children}: CTAButtonProps) {

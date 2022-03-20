@@ -2,6 +2,7 @@ import { BigNumber } from "ethers";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import saveSvgAsPng from 'save-svg-as-png'
 
 import { contractHash } from '../../config'
 import useTokenContract from "../../hooks/useTokenContract";
@@ -51,6 +52,22 @@ export default function Nft() {
 
   function generateQrCode() {
     enableShowQrCode(true)
+  }
+  
+  function getIdQrCode() {
+    return `qrcode-${nft.id}`
+  }
+
+  function downloadImage() {
+    const idSvg = getIdQrCode()
+    const svgElement = document.getElementById(idSvg);
+    
+    const imageOptions = {
+      scale: 3,
+      encoderOptions: 1,
+      backgroundColor: 'white',
+    }
+    saveSvgAsPng.saveSvgAsPng(svgElement, `${idSvg}.png`, imageOptions)
   }
 
   function pauseNft() {
@@ -112,11 +129,20 @@ export default function Nft() {
 
         {showQrCode && (
           <div>
-            <QrGenerator value={JSON.stringify(nft)}></QrGenerator>
-            <button onClick={() => enableShowQrCode(false)}
-              className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
-              Fechar QR Code
-            </button>
+            <QrGenerator id={getIdQrCode()} value={JSON.stringify(nft)}></QrGenerator>
+
+            <div id="buttons">
+              <button onClick={() => enableShowQrCode(false)}
+                className="shadow bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                Fechar QR Code
+              </button>
+              <button
+                onClick={downloadImage}
+                className="shadow bg-orange-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded">
+                Download Image
+              </button>
+            </div>
+
           </div>
         )}
       </div>

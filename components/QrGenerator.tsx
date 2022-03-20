@@ -1,11 +1,12 @@
 import { QRCode } from "react-qr-svg";
 
-const QrGenerator = ({ value }: { value: string }) => {
+const QrGenerator = ({ value, id }: { value: string, id: string }) => {
     return (
         <>
             <QRCode
-                level="Q"
-                style={{ width: 256 }}
+                id={id}
+                level="M"
+                style={{ width: 200 }}
                 value={value}
             >
             </QRCode>
