@@ -12,7 +12,7 @@ import { isMinter } from "../../hooks/useIsMinter"
 
 type NFT = {
   id: Number,
-  name: String
+  name: String,
   description: String,
   extra_links: String[],
   hidden: Boolean,
@@ -34,7 +34,6 @@ export default function Nft() {
   useEffect(() => {
     const fetchNft = async () => {
       if (contract) {
-        console.log(query)
         const nft = await ipfs.getNftById(contract, indexNft)
         nftSet(nft)
       }
