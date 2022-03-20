@@ -4,7 +4,6 @@ import {useRouter}  from 'next/router';
 
 import { contractHash } from '../config'
 import * as ipfs from "../utils/ipfs";
-import NFTList, {NFT} from "./NFTList";
 import CTAButton from "./CTAButton";
 import useTokenContract from "../hooks/useTokenContract";
 import NFTTypes, { NFTType } from "./NFTTypes";
@@ -20,7 +19,6 @@ export default function AdminList() {
     async function awaitAccount() {
       if (contract) {
         // nftsSet(await ipfs.getNftsFromAccount(contract, account))
-        // console.log(getTypes);
         const getTypes = await ipfs.getNftTypes(contract, account);
         typesSet(getTypes);
       }
@@ -30,8 +28,9 @@ export default function AdminList() {
   
   return (
     <>
-      <CTAButton value="Criar nova atração" handleClick={() => router.push("/admin/nft/new")} />
-      {/* <NFTList nfts={nfts} /> */}
+      <CTAButton handleClick={() => router.push("/admin/nft/new")}>
+        Criar nova atração
+      </CTAButton>
       <NFTTypes types={types}/>
     </>
   )

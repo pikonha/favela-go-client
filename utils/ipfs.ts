@@ -1,6 +1,7 @@
 import axios from "axios";
 import { BigNumber } from "ethers";
 
+import { NFT } from "../utils/types";
 import { ERC20 } from "../contracts/types";
 import { ipfsURL } from "../config";
 
@@ -10,28 +11,27 @@ const getUrl = (nftIpfsUrl) => {
   return ipfsId;
 };
 
-async function getNftsFromAccount(contract: ERC20, account: string) {
+async function totalOfNftsByAccount(contract: ERC20, account: string) {
+  if (!contract) return 0;
+  return Number(await contract.balanceOf(account));
+}
+
+async function getNftsFromAccount(
+  contract: ERC20,
+  account: string,
+  limit: number = 10,
+  offset: number = 0
+): Promise<NFT[] | null> {
   if (!contract) {
     return;
   }
-  const ids = await contract.getAllNftsIdsByAddress(account);
-  const ipfsUrls = await Promise.all(
-    ids.map(async (id) => {
-      var uri = await contract.tokenURI(id);
-      return uri;
-    })
-  );
+  let ids = await contract.getAllNftsIdsByAddress(account);
+  ids = ids.slice(offset, offset + limit);
+  const ipfsUrls = await Promise.all(ids.map((id) => contract.tokenURI(id)));
   const nfts = await Promise.all(
-    ipfsUrls.map((url) => axios.get(`${getUrlWithGateway(url)}`))
+    ipfsUrls.map((url) => axios.get<NFT>(`${ipfsURL}/${getUrl(url)}`))
   );
-  return nfts.map((n, i) => ({
-    image: n.data.image,
-    name: n.data.name,
-    id: i,
-    // descriptions: n.data.description,
-    // lat: n.data.lat,
-    // lng: n.data.lng,
-  }));
+  return nfts.map(({ data }, i) => ({ ...data, id: ids[i] }));
 }
 
 async function getNftTypes(contract: ERC20, account: string) {
@@ -65,10 +65,11 @@ async function getNftById(contract: ERC20, id: BigNumber) {
 
 function getUrlWithGateway(tokenUri) {
   return `${ipfsURL}/${getUrl(tokenUri)}`;
-  // console.log(tokenUri);
-  // const ipfsId = getUrl(tokenUri);
-  // const returnString = `${ipfsURL}/${ipfsId}`;
-  // return returnString;
 }
 
-export { getNftsFromAccount, getNftById, getNftTypes, getUrlWithGateway };
+export default {
+  getNftsFromAccount,
+  getNftById,
+  totalOfNftsByAccount,
+  getUrlWithGateway,
+};

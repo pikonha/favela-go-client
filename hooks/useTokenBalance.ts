@@ -5,6 +5,7 @@ import useTokenContract from "./useTokenContract";
 
 function getTokenBalance(contract: ERC20) {
   return async (_: string, address: string) => {
+    if (!contract) return 0
     const balance = await contract.balanceOf(address);
 
     return balance;

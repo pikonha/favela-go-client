@@ -3,8 +3,9 @@
 ## Roadmap
 
 - [ ] User
-  - [ ] Read QR Code
-    - [ ] Button `scan QR code`
+  - [X] Read QR Code
+    - [X] Button `scan QR code`
+      - [ ] Test and improvements
   - [X] List NFTs
     - [X] list
     - [ ] map
@@ -17,8 +18,10 @@
     - [X] enabled
   - [ ] Create a new NFT on smart contract
   - [X] List NFTs
-  - [ ] Pause generation of new NFTs
-  - [ ] Generate QR Code on click
+  - [X] Pause generation of new NFTs
+    - [ ] Tests
+  - [X] Generate QR Code on click
+    - [X] export as png/jpg
 
 ## Features
 
