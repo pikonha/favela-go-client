@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { contractHash } from '../../config'
 import useTokenContract from "../../hooks/useTokenContract";
 import QrGenerator from "../../components/QrGenerator";
-import ipfs from "../../utils/ipfs";
+import ipfs, { getUrlWithGateway } from "../../utils/ipfs";
 
 import { isMinter } from "../../hooks/useIsMinter"
 
@@ -58,7 +58,7 @@ export default function Nft() {
     if (isMinter()) {
       console.log("its a minter")
 
-      contract.updateItem(indexNft, String(nft.image), false)
+      contract.updateItem(indexNft, String(getUrlWithGateway(nft.image)), false)
     } else {
       console.log("not a minter")
     }
@@ -74,7 +74,7 @@ export default function Nft() {
               <div
                 className="h-64 w-64 mx-auto rounded-md bg-cover bg-top bg-no-repeat"
                 style={{
-                  backgroundImage: `url(${nft.image})`
+                  backgroundImage: `url(${getUrlWithGateway(nft.image)})`
                 }}
               />
             </div>
@@ -82,7 +82,7 @@ export default function Nft() {
               <div className="flex">
                 <h3 className="font-semibold text-lg leading-tight truncate mr-2">{nft.name}</h3>
                 <span>
-                  #{nft.id}
+                  #{query.id}
                 </span>
               </div>
               <p className="text-sm text-gray-600 tracking-wide font-semibold mt-2">

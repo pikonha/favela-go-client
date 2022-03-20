@@ -14,16 +14,22 @@ async function getNftsFromAccount(contract: ERC20, account: string) {
     return;
   }
   const ids = await contract.getAllNftsIdsByAddress(account);
-  const ipfsUrls = await Promise.all(ids.map((id) => contract.tokenURI(id)));
+  const ipfsUrls = await Promise.all(
+    ids.map(async (id) => {
+      var uri = await contract.tokenURI(id);
+      return uri;
+    })
+  );
   const nfts = await Promise.all(
-    ipfsUrls.map((url) => axios.get(`${ipfsURL}/${getUrl(url)}`))
+    ipfsUrls.map((url) => axios.get(`${getUrlWithGateway(url)}`))
   );
   return nfts.map((n, i) => ({
-    url: n.data.image,
+    image: n.data.image,
     name: n.data.name,
-    descriptions: n.data.description,
-    lat: n.data.lat,
-    lng: n.data.lng,
+    id: i,
+    // descriptions: n.data.description,
+    // lat: n.data.lat,
+    // lng: n.data.lng,
   }));
 }
 
@@ -31,10 +37,13 @@ async function getNftById(contract: ERC20, id: BigNumber) {
   if (!contract) {
     return;
   }
-
   const tokenUri = await contract.tokenURI(id);
-  const nftRes = await axios.get(`${ipfsURL}/${getUrl(tokenUri)}`);
+  const nftRes = await axios.get(`${getUrlWithGateway(tokenUri)}`);
   return nftRes.data;
+}
+
+export function getUrlWithGateway(tokenUri) {
+  return `${ipfsURL}/${getUrl(tokenUri)}`;
 }
 
 export default {
