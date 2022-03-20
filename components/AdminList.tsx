@@ -19,8 +19,10 @@ export default function AdminList() {
   useEffect(() => {
     async function awaitAccount() {
       if (contract) {
-        nftsSet(await ipfs.getNftsFromAccount(contract, account))
-        typesSet(await ipfs.getNftTypes(contract, account));
+        // nftsSet(await ipfs.getNftsFromAccount(contract, account))
+        const getTypes = await ipfs.getNftTypes(contract, account);
+        console.log(getTypes);
+        typesSet(getTypes);
       }
     }
     awaitAccount()
@@ -29,7 +31,7 @@ export default function AdminList() {
   return (
     <>
       <CTAButton value="Criar nova atração" handleClick={() => router.push("/admin/nft/new")} />
-      <NFTList nfts={nfts} />
+      {/* <NFTList nfts={nfts} /> */}
       <NFTTypes types={types}/>
     </>
   )

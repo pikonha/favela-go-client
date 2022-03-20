@@ -1,11 +1,14 @@
 import { BigNumber } from "ethers";
 import { useRouter } from "next/router";
+import { ipfsURL } from "../config";
 import * as ipfs from "../utils/ipfs"
 
 export type NFTType = {
-  id: number,
-  ipfsId: String,
+  image: String,
   canMint: Boolean,
+  id: number,
+  name: String,
+  ipfsId: String
 }
 
 type NFTTypesListProps = {
@@ -13,17 +16,19 @@ type NFTTypesListProps = {
   isAdmin?: Boolean
 }
 
-function NFTType({ ipfsId: _ipfsId, canMint: _canMint }: NFTType) {
+function NFTType({ name: _name, image: _image, canMint: _canMint, ipfsId: _ipfsId }: NFTType) {
   const router = useRouter()
+  // console.log(_ipfsId)
   return (
     <a className="w-32 h-32 mx-auto rounded-md bg-cover bg-top bg-no-repeat"
       style={{
-        backgroundImage: `url(${_ipfsId})`,
+        backgroundImage: `url(${_image})`,
       }}
 
       //onClick={() => router.push(`/nft/${id.toString()}`)}
       >
-      <p>Habilitado: {_canMint}</p>
+      <p>Nome: {_name}</p>
+      <p>Habilitado: {_canMint ? "Sim" : "Não"}</p>
     </a>
     )
 }
@@ -32,7 +37,7 @@ export default function NFTTypes({ types }: NFTTypesListProps) {
   return (
     <div className="grid mx-auto grid-cols-2 gap-4">
       {types.map((n, i) => (
-        <NFTType key={i} ipfsId={ipfs.getUrlWithGateway(n.ipfsId)} id={n.id} canMint={n.canMint}/>
+        <NFTType key={i} image={ipfs.getUrlWithGateway(n.image)} name={n.name} id={n.id} ipfsId={n.ipfsId} canMint={n.canMint}/>
       ))}
     </div>
   )
